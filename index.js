@@ -9,6 +9,7 @@ app.use(express.json());
 connectToMongoDb(process.env.MONGO_URI);
 
 app.post("/api/v1/bomb", async (req, res) => {
+    console.log(1);
     const { number, total } = req.body;
     let urls = await URL.find().limit(total);
     const urlsLength = urls.length;
@@ -31,14 +32,13 @@ app.post("/api/v1/bomb", async (req, res) => {
                         Referer: url.url,
                     },
                 });
-                res.write(`${i}`);
             } catch (error) {}
             i++;
         } else {
             res.json({ message: "Execution Done" });
             clearInterval(intervalId);
         }
-    }, 2000);
+    }, 1500);
 });
 
 app.post("/api/add/otp-bombing/site", async (req, res) => {
