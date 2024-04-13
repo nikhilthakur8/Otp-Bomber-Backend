@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-function connectToMongoDb(mongoURI) {
-    mongoose.connect(mongoURI).then(() => {
+async function connectToMongoDb(mongoURI) {
+    await mongoose.connect(mongoURI).then(() => {
         console.log("Connected to MongoDB");
     });
 }
