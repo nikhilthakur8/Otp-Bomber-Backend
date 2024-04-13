@@ -11,7 +11,7 @@ connectToMongoDb(process.env.MONGO_URI);
 app.post("/api/v1/bomb", async (req, res) => {
     console.log(1);
     const { number, total } = req.body;
-    let urls = await URL.find().limit(total);
+    let urls = await URL.find();
     const urlsLength = urls.length;
     let i = 0;
     const intervalId = setInterval(async () => {
