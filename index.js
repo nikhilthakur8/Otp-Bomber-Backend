@@ -38,7 +38,7 @@ app.post("/api/v1/bomb", async (req, res) => {
             res.json({ message: "Execution Done" });
             clearInterval(intervalId);
         }
-    }, 1500);
+    }, 1000);
 });
 
 app.post("/api/add/otp-bombing/site", async (req, res) => {
