@@ -31,6 +31,7 @@ app.post("/api/v1/bomb", async (req, res) => {
                         Referer: url.url,
                     },
                 });
+                res.write(`${i}`);
             } catch (error) {}
             i++;
         } else {
